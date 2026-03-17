@@ -406,6 +406,14 @@ export function initUI() {
 
   // shape selector
   buildShapeSelector();
+  const initialShape = SHAPES[state.activeShape];
+  if (initialShape) {
+    updateSliderForShape(initialShape);
+    const edgeSection = document.getElementById('edgeSection');
+    if (edgeSection) edgeSection.style.display = initialShape.hasEdges ? '' : 'none';
+    const urlLabel = document.querySelector('#urlSection .section-label');
+    if (urlLabel) urlLabel.textContent = initialShape.urlLabel;
+  }
 
   // export handlers
   initExportHandlers();
