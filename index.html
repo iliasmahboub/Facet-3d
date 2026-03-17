@@ -824,6 +824,8 @@ document.getElementById('gridFalloffSlider').addEventListener('input',e=>{gridFa
 document.getElementById('themeIconBtn').addEventListener('click',()=>{isDarkMode=!isDarkMode;applyTheme();});
 document.querySelectorAll('#viewModeControl .segment-btn').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('#viewModeControl .segment-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');viewMode=btn.dataset.mode;scheduleRebuild(0);});});
 
+const raycaster=new THREE.Raycaster();const mouse=new THREE.Vector2();viewport.addEventListener('click',(e)=>{const rect=viewport.getBoundingClientRect();mouse.x=((e.clientX-rect.left)/rect.width)*2-1;mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;raycaster.setFromCamera(mouse,camera);const hits=raycaster.intersectObjects(faceMeshes);if(hits.length>0){const fi=hits[0].object.userData.faceIndex;if(fi>=0&&fi<6){const dist=distributeURLs();const url=dist[fi];let inputIdx=-1;if(url){for(let i=0;i<6;i++){if(urls[i]?.trim()===url){inputIdx=i;break;}}}if(inputIdx<0){for(let i=0;i<6;i++){if(!urls[i]||!urls[i].trim()){inputIdx=i;break;}}if(inputIdx<0)inputIdx=fi<6?fi:0;}urlInputs[inputIdx].focus();urlInputs[inputIdx].scrollIntoView({behavior:'smooth',block:'nearest'});}}});
+
 edgeSlider.max=Math.round(cubeSize*0.15*10)/10;
 updateGridColor();
 applyTheme();
