@@ -2,12 +2,12 @@
 // every module imports from here instead of keeping local copies
 
 export const ACCENT_COLORS = [
-  { name: 'orange', hex: '#FF4F00', dim: '#cc3f00', three: 0xFF4F00 },
-  { name: 'blue',   hex: '#0088FF', dim: '#0066cc', three: 0x0088FF },
-  { name: 'green',  hex: '#00CC66', dim: '#00aa55', three: 0x00CC66 },
-  { name: 'purple', hex: '#8844FF', dim: '#6633cc', three: 0x8844FF },
-  { name: 'red',    hex: '#FF2244', dim: '#cc1133', three: 0xFF2244 },
-  { name: 'cyan',   hex: '#00DDCC', dim: '#00bbaa', three: 0x00DDCC },
+  { name: 'indigo', hex: '#6366f1', dim: '#4f46e5', three: 0x6366f1 },
+  { name: 'blue',   hex: '#3b82f6', dim: '#2563eb', three: 0x3b82f6 },
+  { name: 'emerald',hex: '#10b981', dim: '#059669', three: 0x10b981 },
+  { name: 'violet', hex: '#8b5cf6', dim: '#7c3aed', three: 0x8b5cf6 },
+  { name: 'rose',   hex: '#f43f5e', dim: '#e11d48', three: 0xf43f5e },
+  { name: 'amber',  hex: '#f59e0b', dim: '#d97706', three: 0xf59e0b },
 ];
 
 export const FACE_TABLE = [
