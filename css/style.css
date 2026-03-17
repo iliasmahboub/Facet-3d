@@ -319,8 +319,10 @@ input[type="range"]::-webkit-slider-thumb {
 /* responsive */
 @media (max-width: 800px) {
   body { flex-direction: column; }
-  #panel { width: 100%; min-width: unset; height: auto; max-height: 50vh; border-right: none; border-bottom: 1px solid var(--border); }
-  #viewport { height: 50vh; }
+  #panel { width: 100%; min-width: unset; height: auto; max-height: 45vh; border-right: none; border-bottom: 1px solid var(--border); padding: 20px 16px; }
+  #viewport { height: 55vh; }
+  #shapeSelector { gap: 4px; }
+  .shape-btn { padding: 8px 2px 6px; }
 }
 
 /* viewport controls */
