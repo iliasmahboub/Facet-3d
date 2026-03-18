@@ -13,6 +13,25 @@ let pendingDispose = [];
 const faceTagEls = [];
 const urlInputs = [];
 
+const FILAMENT_COLORS = [
+  { name: 'White',      hex: '#e8e8e8', h: 0,   s: 0.00, l: 0.91 },
+  { name: 'Light Gray', hex: '#b0b0b0', h: 0,   s: 0.00, l: 0.69 },
+  { name: 'Dark Gray',  hex: '#555555', h: 0,   s: 0.00, l: 0.33 },
+  { name: 'Black',      hex: '#1a1a1a', h: 0,   s: 0.00, l: 0.10 },
+  { name: 'Red',        hex: '#cc3333', h: 0,   s: 0.60, l: 0.50 },
+  { name: 'Orange',     hex: '#e07020', h: 25,  s: 0.75, l: 0.50 },
+  { name: 'Yellow',     hex: '#d4b830', h: 50,  s: 0.65, l: 0.51 },
+  { name: 'Lime',       hex: '#6fbf40', h: 100, s: 0.50, l: 0.50 },
+  { name: 'Green',      hex: '#33a555', h: 145, s: 0.52, l: 0.42 },
+  { name: 'Teal',       hex: '#30a0a0', h: 180, s: 0.55, l: 0.41 },
+  { name: 'Sky Blue',   hex: '#4499dd', h: 207, s: 0.65, l: 0.57 },
+  { name: 'Blue',       hex: '#3355bb', h: 227, s: 0.55, l: 0.47 },
+  { name: 'Indigo',     hex: '#5544cc', h: 248, s: 0.58, l: 0.53 },
+  { name: 'Purple',     hex: '#8833bb', h: 277, s: 0.55, l: 0.47 },
+  { name: 'Pink',       hex: '#cc4488', h: 335, s: 0.55, l: 0.53 },
+  { name: 'Rose',       hex: '#dd4455', h: 354, s: 0.65, l: 0.57 },
+];
+
 // rebuild — the core render loop that builds the active shape
 export function rebuild() {
   for (const g of pendingDispose) g.dispose();
@@ -142,7 +161,7 @@ function updateFaceTags() {
 // theme
 function syncPresetAccent(id) {
   let col = null;
-  if (id === 'solid') col = hslAccent(gp('solid', 'color', 230), 0.75, 0.60);
+  if (id === 'solid') { const hsl = state.presetParams['solid-color-hsl']; col = hsl ? hslAccent(hsl[0], Math.max(hsl[1], 0.3), Math.max(hsl[2], 0.3)) : hslAccent(gp('solid', 'color', 230), 0.75, 0.60); }
   else if (id === 'clay') col = hslAccent(gp('clay', 'color', 25), 0.55, 0.55);
   else if (id === 'neon') col = hslAccent(gp('neon', 'hue', 270), 0.90, 0.65);
   else if (id === 'gradient') col = hslAccent(gp('gradient', 'color1', 263), 0.75, 0.62);
@@ -157,6 +176,47 @@ function syncPresetAccent(id) {
 function buildPresetSliders(presetId) {
   const container = document.getElementById('presetParams');
   container.innerHTML = '';
+
+  // color palette for solid preset
+  if (presetId === 'solid') {
+    const label = document.createElement('div');
+    label.className = 'ov-label';
+    label.textContent = 'Color';
+    container.appendChild(label);
+    const palette = document.createElement('div');
+    palette.className = 'color-palette';
+    for (const c of FILAMENT_COLORS) {
+      const dot = document.createElement('div');
+      dot.className = 'color-dot';
+      dot.style.background = c.hex;
+      dot.title = c.name;
+      dot.addEventListener('click', () => {
+        state.presetParams['solid-color-hsl'] = [c.h, c.s, c.l];
+        if (state.activePresetMat) state.activePresetMat.color.setHSL(c.h / 360, c.s, c.l);
+        palette.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+        dot.classList.add('active');
+        syncPresetAccent(presetId);
+      });
+      palette.appendChild(dot);
+    }
+    container.appendChild(palette);
+    // roughness slider only for solid
+    const roughSlider = PRESET_SLIDERS.solid.find(s => s.key === 'rough');
+    if (roughSlider) {
+      const val = gp('solid', 'rough', roughSlider.def);
+      const row = document.createElement('div');
+      row.className = 'ov-slider-row';
+      row.innerHTML = `<div class="ov-label">${roughSlider.label}</div><input type="range" class="param-range" min="${roughSlider.min}" max="${roughSlider.max}" value="${val}">`;
+      row.querySelector('input').addEventListener('input', (e) => {
+        const v = parseFloat(e.target.value);
+        state.presetParams['solid-rough'] = v;
+        if (state.activePresetMat) roughSlider.apply(v, state.activePresetMat);
+      });
+      container.appendChild(row);
+    }
+    return;
+  }
+
   const sliders = PRESET_SLIDERS[presetId];
   if (!sliders) return;
   for (const s of sliders) {

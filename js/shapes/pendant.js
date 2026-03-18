@@ -168,7 +168,7 @@ function buildPendantDisc(radius, thickness, depth, qrData) {
 function buildBail(radius, thickness) {
   // solid integrated bail — like real jewelry
   // a torus (ring) that sits at the top of the disc, partially overlapping
-  const bailR = radius * 0.22;         // ring major radius
+  const bailR = Math.max(radius * 0.25, 4); // ring major radius, min 4mm for thick cords
   const tubeR = thickness * 0.45;      // tube radius (thick for printing)
   const centerY = radius + bailR * 0.5; // sits just above disc edge
   const positions = [];
@@ -272,7 +272,7 @@ registerShape('pendant', {
   maxFaces: 1,
   urlLabel: 'QR URL',
   build,
-  getGroundY: (size) => -(size / 2) - (size * 0.22) - 1,
+  getGroundY: (size) => -(size / 2) - Math.max(size / 2 * 0.25, 4) - 1,
   sizeRange: { min: 25, max: 80, default: 40, step: 1 },
   sizeLabel: 'Pendant Diameter',
   sizeHint: '30mm+ for scannable QR — 40mm is a nice sweet spot',
