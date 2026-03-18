@@ -4,6 +4,10 @@ Browser-based 3D print customizer with QR code engraving. Design objects, previe
 
 No frameworks. No bundlers. No npm. Pure vanilla HTML/CSS/JS with CDN imports.
 
+## Live Demo
+
+https://iliasmahboub.github.io/Facet-3d/
+
 ## Shapes
 
 | Shape | Description | QR Faces |
@@ -73,6 +77,12 @@ npx serve .
 ```
 
 Then open `http://localhost:8000` in your browser.
+
+## Deployment
+
+GitHub Pages is configured via GitHub Actions. Pushes to `master` publish the static site to:
+
+`https://iliasmahboub.github.io/Facet-3d/`
 
 ## Tech Stack
 
