@@ -182,15 +182,17 @@ function buildBail(radius, thickness) {
       const b0 = (j / BAIL_TUBE_SEGS) * Math.PI * 2;
       const b1 = ((j + 1) / BAIL_TUBE_SEGS) * Math.PI * 2;
 
+      // ring sweeps in YZ plane so chain threads left-to-right (X axis)
+      // and pendant face points forward when worn
       const pt = (a, b) => new THREE.Vector3(
-        (bailR + tubeR * Math.cos(b)) * Math.cos(a),
+        tubeR * Math.sin(b),
         centerY + (bailR + tubeR * Math.cos(b)) * Math.sin(a),
-        tubeR * Math.sin(b)
+        (bailR + tubeR * Math.cos(b)) * Math.cos(a)
       );
       const nm = (a, b) => new THREE.Vector3(
-        Math.cos(b) * Math.cos(a),
+        Math.sin(b),
         Math.cos(b) * Math.sin(a),
-        Math.sin(b)
+        Math.cos(b) * Math.cos(a)
       ).normalize();
 
       pushQuad(positions, normals,

@@ -64,7 +64,7 @@ export function rebuild() {
   if (hasAnyQR && state.currentPresetId === 'neon') {
     warnings.push({ face: 'Print', msg: '\u26A0 Dark material detected \u2014 QR codes may not scan. Use a light-colored filament like white PLA.' });
   }
-  if (hasAnyQR && state.cubeSize < 50) {
+  if (hasAnyQR && state.cubeSize < 50 && state.shape !== 'pendant') {
     warnings.push({ face: 'Print', msg: '\u26A0 Size below 50mm \u2014 QR codes may not scan reliably. Recommend 60mm minimum.' });
   }
   if (hasAnyQR && state.engraveDepth < 0.8) {
